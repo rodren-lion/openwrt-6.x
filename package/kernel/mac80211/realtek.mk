@@ -14,6 +14,7 @@ config-$(call config_package,rtl8192c-common) += RTL8192C_COMMON
 config-$(call config_package,rtl8192ce) += RTL8192CE
 config-$(call config_package,rtl8192se) += RTL8192SE
 config-$(call config_package,rtl8192de) += RTL8192DE
+config-$(call config_package,rtl8192du) += RTL8192DU
 config-$(call config_package,rtl8192cu) += RTL8192CU
 config-$(call config_package,rtl8821ae) += RTL8821AE
 config-$(CONFIG_PACKAGE_RTLWIFI_DEBUG) += RTLWIFI_DEBUG
@@ -53,6 +54,7 @@ config-$(call config_package,rtw89-8851be) += RTW89_8851B RTW89_8851BE
 config-$(call config_package,rtw89-8852ae) += RTW89_8852A RTW89_8852AE
 config-$(call config_package,rtw89-8852be) += RTW89_8852B RTW89_8852BE
 config-$(call config_package,rtw89-8852ce) += RTW89_8852C RTW89_8852CE
+config-$(call config_package,rtw89-8922ae) += RTW89_8922A RTW89_8922AE
 config-$(CONFIG_PACKAGE_RTW89_DEBUG) += RTW89_DEBUG
 config-$(CONFIG_PACKAGE_RTW89_DEBUGFS) += RTW89_DEBUGFS
 config-$(CONFIG_PACKAGE_RTW89_DEBUGMSG) += RTW89_DEBUGMSG
@@ -131,6 +133,14 @@ define KernelPackage/rtl8192de
   DEPENDS+= +kmod-rtlwifi-pci +rtl8192de-firmware
   FILES:= $(PKG_BUILD_DIR)/drivers/net/wireless/realtek/rtlwifi/rtl8192de/rtl8192de.ko
   AUTOLOAD:=$(call AutoProbe,rtl8192de)
+endef
+
+define KernelPackage/rtl8192du
+  $(call KernelPackage/mac80211/Default)
+  TITLE:=Realtek RTL8192DU support
+  DEPENDS+= +kmod-rtlwifi-usb +kmod-rtl8192d-common +rtl8192du-firmware
+  FILES:= $(PKG_BUILD_DIR)/drivers/net/wireless/realtek/rtlwifi/rtl8192du/rtl8192du.ko
+  AUTOLOAD:=$(call AutoProbe,rtl8192du)
 endef
 
 define KernelPackage/rtl8192cu
@@ -449,4 +459,14 @@ define KernelPackage/rtw89-8852ce
 	$(PKG_BUILD_DIR)/drivers/net/wireless/realtek/rtw89/rtw89_8852c.ko \
 	$(PKG_BUILD_DIR)/drivers/net/wireless/realtek/rtw89/rtw89_8852ce.ko
   AUTOLOAD:=$(call AutoProbe,rtw89_8852ce)
+endef
+
+define KernelPackage/rtw89-8922ae
+  $(call KernelPackage/mac80211/Default)
+  TITLE:=Realtek RTL8922AE support
+  DEPENDS+= +kmod-rtw89-pci +rtl8922ae-firmware +@DRIVER_11BE_SUPPORT
+  FILES:= \
+	$(PKG_BUILD_DIR)/drivers/net/wireless/realtek/rtw89/rtw89_8922a.ko \
+	$(PKG_BUILD_DIR)/drivers/net/wireless/realtek/rtw89/rtw89_8922ae.ko
+  AUTOLOAD:=$(call AutoProbe,rtw89_8922ae)
 endef

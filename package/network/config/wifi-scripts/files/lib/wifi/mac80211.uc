@@ -14,9 +14,11 @@ let commit;
 
 let config = uci.cursor().get_all("wireless") ?? {};
 
-function radio_exists(path, macaddr, phy) {
+function radio_exists(path, macaddr, phy, radio) {
 	for (let name, s in config) {
 		if (s[".type"] != "wifi-device")
+			continue;
+		if (radio != null && int(s.radio) != radio)
 			continue;
 		if (s.macaddr & lc(s.macaddr) == lc(macaddr))
 			return true;
@@ -34,42 +36,45 @@ for (let phy_name, phy in board.wlan) {
 	if (!info || !length(info.bands))
 		continue;
 
-	while (config[`radio${idx}`])
-		idx++;
-	let name = "radio" + idx++;
+	let radios = length(info.radios) > 0 ? info.radios : [{ bands: info.bands }];
+	for (let radio in radios) {
+		while (config[`radio${idx}`])
+			idx++;
+		let name = "radio" + idx;
 
-	let s = "wireless." + name;
-	let si = "wireless.default_" + name;
+		let s = "wireless." + name;
+		let si = "wireless.default_" + name;
 
-	let band_name = filter(bands_order, (b) => info.bands[b])[0];
-	if (!band_name)
-		continue;
+		let band_name = filter(bands_order, (b) => radio.bands[b])[0];
+		if (!band_name)
+			continue;
 
-	let band = info.bands[band_name];
-	let channel = band.default_channel ?? "auto";
+		let band = info.bands[band_name];
+		let rband = radio.bands[band_name];
+		let channel = rband.default_channel ?? "auto";
 
-	let width = band.max_width;
-	if (band_name == "2G")
-		width = 20;
-	else if (width > 80)
-		width = 80;
+		let width = band.max_width;
+		if (band_name == "2G")
+			width = 20;
+		else if (width > 80)
+			width = 80;
 
-	let htmode = filter(htmode_order, (m) => band[lc(m)])[0];
-	if (htmode)
-		htmode += width;
-	else
-		htmode = "NOHT";
+		let htmode = filter(htmode_order, (m) => band[lc(m)])[0];
+		if (htmode)
+			htmode += width;
+		else
+			htmode = "NOHT";
 
-	if (!phy.path)
-		continue;
+		if (!phy.path)
+			continue;
 
-	let macaddr = trim(readfile(`/sys/class/ieee80211/${phy_name}/macaddress`));
-	if (radio_exists(phy.path, macaddr, phy_name))
-		continue;
+		let macaddr = trim(readfile(`/sys/class/ieee80211/${phy_name}/macaddress`));
+		if (radio_exists(phy.path, macaddr, phy_name, radio.index))
+			continue;
 
-	let id = `phy='${phy_name}'`;
-	if (match(phy_name, /^phy[0-9]/))
-		id = `path='${phy.path}'`;
+		let id = `phy='${phy_name}'`;
+		if (match(phy_name, /^phy[0-9]/))
+			id = `path='${phy.path}'`;
 
 	print(`set ${s}=wifi-device
 set ${s}.type='mac80211'
@@ -87,7 +92,9 @@ set ${si}.ssid='LiBwrt'
 set ${si}.encryption='none'
 
 `);
-	commit = true;
+		config[name] = {};
+		commit = true;
+	}
 }
 
 if (commit)
