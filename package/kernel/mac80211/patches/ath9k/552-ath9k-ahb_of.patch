@@ -252,7 +252,7 @@
  
  	ah = sc->sc_ah;
  	ath9k_hw_name(ah, hw_name, sizeof(hw_name));
-@@ -162,6 +373,9 @@ static struct platform_driver ath_ahb_dr
+@@ -155,6 +366,9 @@ static struct platform_driver ath_ahb_dr
  	.remove_new = ath_ahb_remove,
  	.driver		= {
  		.name	= "ath9k",
