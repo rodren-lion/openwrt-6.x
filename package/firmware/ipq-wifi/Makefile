@@ -6,9 +6,9 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=$(PROJECT_GIT)/project/firmware/qca-wireless.git
-PKG_SOURCE_DATE:=2025-05-30
-PKG_SOURCE_VERSION:=fde3d2a7ce59be389224304049a4a5b9ca49a45e
-PKG_MIRROR_HASH:=2e149366118192d4976baf42ac23d22ef32e477feb111d2756a2411278b6cf46
+PKG_SOURCE_DATE:=2025-06-13
+PKG_SOURCE_VERSION:=4810aacf3b1c5de99923b9a424a1f0e6341c6bca
+PKG_MIRROR_HASH:=78d1102702a9d5894c6e70620c144fcf40d27cac8682dc340b31786e4bd190b8
 PKG_FLAGS:=nonshared
 
 include $(INCLUDE_DIR)/package.mk
@@ -47,6 +47,13 @@ ALLWIFIBOARDS:= \
   	jdcloud_ax6600 \
   	linksys_mr7350 \
   	linksys_mx4200 \
+	iodata_wn-dax3000gr \
+	linksys_homewrk \
+	linksys_mr5500 \
+	linksys_mr7350 \
+	linksys_mr7500 \
+	linksys_mx2000 \
+	linksys_mx4200 \
 	linksys_mx5300 \
 	linksys_mx8500 \
 	linksys_whw03 \
@@ -75,6 +82,7 @@ ALLWIFIBOARDS:= \
 	wallys_dr40x9 \
   	xiaomi_ax1800 \
 	xiaomi_ax3600 \
+	xiaomi_ax6000 \
 	xiaomi_ax9000 \
 	yyets_le1 \
 	yuncore_ax880 \
@@ -192,6 +200,9 @@ $(eval $(call generate-ipq-wifi-package,glinet_gl-axt1800,GL.iNet GL-AXT1800))
 $(eval $(call generate-ipq-wifi-package,glinet_gl-b3000,GL.iNet GL-B3000))
 $(eval $(call generate-ipq-wifi-package,jdcloud_ax1800-pro,JDCloud AX1800 Pro))
 $(eval $(call generate-ipq-wifi-package,jdcloud_ax6600,JDCloud AX6600))
+$(eval $(call generate-ipq-wifi-package,iodata_wn-dax3000gr,I-O DATA WN-DAX3000GR))
+$(eval $(call generate-ipq-wifi-package,linksys_homewrk,Linksys HomeWRK))
+$(eval $(call generate-ipq-wifi-package,linksys_mr5500,Linksys MR5500))
 $(eval $(call generate-ipq-wifi-package,linksys_mr7350,Linksys MR7350))
 $(eval $(call generate-ipq-wifi-package,linksys_mx4200,Linksys MX4200))
 $(eval $(call generate-ipq-wifi-package,linksys_mx5300,Linksys MX5300))
@@ -222,6 +233,7 @@ $(eval $(call generate-ipq-wifi-package,tplink_archer-c6-v2,TP-Link Archer C6 V2
 $(eval $(call generate-ipq-wifi-package,wallys_dr40x9,Wallys DR40X9))
 $(eval $(call generate-ipq-wifi-package,xiaomi_ax1800,Xiaomi AX1800))
 $(eval $(call generate-ipq-wifi-package,xiaomi_ax3600,Xiaomi AX3600))
+$(eval $(call generate-ipq-wifi-package,xiaomi_ax6000,Xiaomi AX6000))
 $(eval $(call generate-ipq-wifi-package,xiaomi_ax9000,Xiaomi AX9000))
 $(eval $(call generate-ipq-wifi-package,yyets_le1,YYeTs LE1))
 $(eval $(call generate-ipq-wifi-package,yuncore_ax880,Yuncore AX880))
